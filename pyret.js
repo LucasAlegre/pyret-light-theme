@@ -178,6 +178,28 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
         (match = stream.match(pyret_single_punctuation, true))) {
       if (state.dataNoPipeColon && (match[0] == ":" || match[0] == "|"))
         state.dataNoPipeColon = false;
+      if (match[0] === "::" || match[0] === "->") {
+        state.inTypeAnnotation = true;
+        state.typeParenDepth = 0;
+      } else if (state.inTypeAnnotation) {
+        if (match[0] === "(" || match[0] === "<" || match[0] === "[" || match[0] === "{") {
+          state.typeParenDepth = (state.typeParenDepth || 0) + 1;
+        } else if (match[0] === ")" || match[0] === ">" || match[0] === "]" || match[0] === "}") {
+          if ((state.typeParenDepth || 0) > 0) {
+            state.typeParenDepth--;
+          } else {
+            state.inTypeAnnotation = false;
+          }
+        } else if (match[0] === ",") {
+          if ((state.typeParenDepth || 0) === 0) {
+            state.inTypeAnnotation = false;
+          }
+        } else if (match[0] === ":" || match[0] === "=") {
+          if ((state.typeParenDepth || 0) === 0) {
+            state.inTypeAnnotation = false;
+          }
+        }
+      }
       return ret(state, match[0], match[0], 'builtin');
     }
     if ((match = stream.match(pyret_keywords_hyphen, true))) {
@@ -186,6 +208,12 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
     if ((match = stream.match(pyret_keywords, true))) {
       if (match[0] == "data")
         state.dataNoPipeColon = true;
+      if (match[0] === "type" || match[0] === "newtype" || match[0] === "data") {
+        state.inTypeAnnotation = true;
+        state.typeParenDepth = 0;
+      } else if (state.inTypeAnnotation && (state.typeParenDepth || 0) === 0) {
+        state.inTypeAnnotation = false;
+      }
       return ret(state, match[0], match[0], 'keyword');
     }
     if ((match = stream.match(pyret_booleans, true))) {
@@ -199,8 +227,17 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
     }
     // Level 2
     if ((match = stream.match(pyret_ident_regex))) {
-      if (state.lastToken === "|" || state.lastToken === "::" || state.lastToken === "data"
-          || state.dataNoPipeColon) {
+      const isPascalCase = /^[A-Z][a-zA-Z0-9_-]*$/.test(match[0]) && !(/^[A-Z0-9_-]+$/.test(match[0]) && match[0].length > 1 && !/^[A-Z][a-z]/.test(match[0]));
+      const isType = state.inTypeAnnotation ||
+                     state.lastToken === "|" ||
+                     state.lastToken === "::" ||
+                     state.lastToken === "->" ||
+                     state.lastToken === "data" ||
+                     state.lastToken === "type" ||
+                     state.dataNoPipeColon ||
+                     isPascalCase;
+
+      if (isType) {
         state.dataNoPipeColon = false;
         return ret(state, 'name', match[0], 'type');
       }

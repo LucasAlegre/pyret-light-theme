@@ -1,6 +1,6 @@
 {
-  "name": "pyret-light-theme",
-  "displayName": "Pyret Light Theme",
+  "name": "pyret-vscode-theme",
+  "displayName": "Pyret VSCode Theme",
   "description": "Syntax highlighting and color theme for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting of keywords, functions, types, strings, numbers and comments.",
   "version": "1.0.0",
   "publisher": "LucasAlegre",
