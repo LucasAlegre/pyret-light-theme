@@ -1,55 +1,49 @@
-# Pyret Light Theme
+# Pyret VSCode Theme
 
-A VS Code extension that provides syntax highlighting and a color theme for the [Pyret programming language](https://www.pyret.org/) (`.arr` files).
+A VS Code extension that provides syntax highlighting and color themes for the [Pyret programming language](https://www.pyret.org/) (`.arr` files).
 
 This extension uses the **real Pyret tokenizer** (the same one used by [code.pyret.org](https://code.pyret.org)) via VS Code's Semantic Tokens API, ensuring accurate and context-aware highlighting.
 
+## Included Themes
+
+- ☀️ **Pyret Light** — clean white background with official colors from `code.pyret.org`
+- 🌙 **Pyret Dark (One Dark)** — sleek dark mode based on Atom's popular **One Dark Pro** palette (`#282c34`)
+
 ## Features
 
-- 🎨 **Pyret Light color theme** — clean white background with carefully chosen colors from the official `code.pyret.org` theme
 - 🔤 **Accurate syntax highlighting** via the actual Pyret tokenizer (not just regexes)
-- 🟥 **Keywords** (`fun`, `check`, `ask`, `end`, `if`, `else`, `cases`, `data`, etc.) — Crimson Red
-- 🟦 **Function names & calls** — Blue
-- 🟪 **Types & data variants** — Purple
-- 🟩 **Strings** — Green
-- 🟠 **Comments** (`# ...` and `#| ... |#`) — Orange/Gold
-- 🔵 **Numbers** (decimal, rational `1/3`, rough `~1.5`) — Blue shades
-- ⬛ **Variables** — Dark Graphite
+- 🟪 **Keywords** (`fun`, `check`, `ask`, `end`, `if`, `else`, `cases`, `data`, etc.)
+- 🟦 **Function names & calls**
+- 🟨 **Types & data variants**
+- 🟩 **Strings**
+- 🩶 **Comments** (`# ...` and `#| ... |#`)
+- 🟧 **Numbers & Booleans**
+- ⬜ **Variables & Parameters**
+
+## Color Mapping Comparison
+
+| Token Type | Pyret Light | Pyret Dark (One Dark) |
+|------------|-------------|-----------------------|
+| Keywords (`fun`, `check`, `end`, ...) | `#b91c1c` (Crimson) | `#c678dd` (Purple/Magenta) |
+| Functions & Calls | `#0066cc` (Blue) | `#61afef` (Bright Blue) |
+| Types (`List`, `String`, `Number`, ...) | `#5b21b6` (Dark Purple) | `#e5c07b` (Gold/Yellow) |
+| Strings | `#16a34a` (Green) | `#98c379` (Light Green) |
+| Comments | `#d97706` (Orange) | `#7f848e` (Gray Italic) |
+| Numbers & Booleans | `#1d4ed8` (Dark Blue) | `#d19a66` (Orange) |
+| Parameters | `#111827` (Dark Graphite) | `#e06c75` (Coral Red) |
+| Variables & Operators | `#111827` (Dark Graphite) | `#56b6c2` (Cyan) / `#abb2bf` |
 
 ## Installation
 
-### From VS Code Marketplace
-1. Open VS Code
-2. Go to Extensions (`Ctrl+Shift+X`)
-3. Search for **"Pyret Light Theme"**
-4. Click **Install**
-
 ### From VSIX file
 ```bash
-code --install-extension pyret-light-theme.vsix
+code --install-extension pyret-vscode-theme-1.1.0.vsix
 ```
 
-### Apply the color theme
-1. `Ctrl+Shift+P` → **"Color Theme"** → select **"Pyret Light"**
-
-## Screenshot
-
-Files with `.arr` extension are automatically recognized as Pyret and highlighted.
-
-## Token Colors
-
-| Token | Color |
-|-------|-------|
-| Keywords (`fun`, `check`, `end`, ...) | `#b91c1c` (Crimson Red) |
-| Function names & calls | `#0066cc` (Blue) |
-| Types & data variants | `#5b21b6` (Purple) |
-| Strings | `#16a34a` (Green) |
-| Comments | `#d97706` (Orange/Gold) |
-| Numbers (decimal) | `#1d4ed8` (Dark Blue) |
-| Numbers (rational `1/3`) | `#4f46e5` (Indigo) |
-| Numbers (rough `~1.5`) | `#2563eb` (Blue) |
-| Booleans (`true`, `false`) | `#2563eb` (Blue) |
-| Variables | `#111827` (Dark Graphite) |
+### Selecting your theme
+1. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS)
+2. Select **"Preferences: Color Theme"**
+3. Choose either **"Pyret Light"** or **"Pyret Dark (One Dark)"**
 
 ## How it works
 
@@ -62,3 +56,4 @@ MIT
 ## Credits
 
 - Pyret language tokenizer from [pyret-codemirror-mode](https://github.com/brownplt/pyret-codemirror-mode) by the [Pyret team](https://www.pyret.org/) (Brown University PLT)
+- One Dark Pro color palette by [Atom / Binaryify](https://github.com/Binaryify/OneDark-Pro)

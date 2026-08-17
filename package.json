@@ -1,14 +1,14 @@
 {
   "name": "pyret-vscode-theme",
   "displayName": "Pyret VSCode Theme",
-  "description": "Syntax highlighting and color theme for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting of keywords, functions, types, strings, numbers and comments.",
-  "version": "1.0.0",
+  "description": "Syntax highlighting and color themes for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting. Includes both Pyret Light and Pyret Dark (One Dark Pro) color themes.",
+  "version": "1.1.0",
   "publisher": "LucasAlegre",
   "license": "MIT",
   "icon": "icon.png",
   "galleryBanner": {
-    "color": "#ffffff",
-    "theme": "light"
+    "color": "#282c34",
+    "theme": "dark"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/LucasAlegre/pyret-light-theme/issues"
   },
-  "keywords": ["pyret", "syntax", "theme", "highlighting", "arr"],
+  "keywords": ["pyret", "syntax", "theme", "highlighting", "arr", "one dark pro", "dark theme"],
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -44,6 +44,11 @@
         "label": "Pyret Light",
         "uiTheme": "vs",
         "path": "./themes/pyret-light-color-theme.json"
+      },
+      {
+        "label": "Pyret Dark (One Dark)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/pyret-dark-color-theme.json"
       }
     ]
   },
