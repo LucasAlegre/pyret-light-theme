@@ -62,4 +62,3 @@ MIT
 ## Credits
 
 - Pyret language tokenizer from [pyret-codemirror-mode](https://github.com/brownplt/pyret-codemirror-mode) by the [Pyret team](https://www.pyret.org/) (Brown University PLT)
-- Color palette from the [code.pyret.org](https://github.com/brownplt/code.pyret.org) pyret-light theme
