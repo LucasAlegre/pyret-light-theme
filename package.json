@@ -2,13 +2,13 @@
   "name": "pyret-vscode-theme",
   "displayName": "Pyret VSCode Theme",
   "description": "Syntax highlighting and color themes for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting. Includes both Pyret Light and Pyret Dark (One Dark Pro) color themes.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "LucasAlegre",
   "license": "MIT",
   "icon": "icon.png",
   "galleryBanner": {
-    "color": "#282c34",
-    "theme": "dark"
+    "color": "#ffffff",
+    "theme": "light"
   },
   "repository": {
     "type": "git",
