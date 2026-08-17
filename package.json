@@ -1,0 +1,51 @@
+{
+  "name": "pyret-light-theme",
+  "displayName": "Pyret Light Theme",
+  "description": "Syntax highlighting and color theme for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting of keywords, functions, types, strings, numbers and comments.",
+  "version": "1.0.0",
+  "publisher": "pyret-local",
+  "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#ffffff",
+    "theme": "light"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brownplt/code.pyret.org"
+  },
+  "homepage": "https://github.com/brownplt/code.pyret.org",
+  "bugs": {
+    "url": "https://github.com/brownplt/code.pyret.org/issues"
+  },
+  "keywords": ["pyret", "syntax", "theme", "highlighting", "arr"],
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": ["Programming Languages", "Themes"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pyret",
+        "aliases": ["Pyret", "pyret"],
+        "extensions": [".arr"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pyret",
+        "scopeName": "source.pyret",
+        "path": "./syntaxes/pyret.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Pyret Light",
+        "uiTheme": "vs",
+        "path": "./themes/pyret-light-color-theme.json"
+      }
+    ]
+  },
+  "main": "./extension.js"
+}
