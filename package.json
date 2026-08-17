@@ -3,7 +3,7 @@
   "displayName": "Pyret Light Theme",
   "description": "Syntax highlighting and color theme for Pyret (.arr) files. Uses the real Pyret tokenizer for accurate highlighting of keywords, functions, types, strings, numbers and comments.",
   "version": "1.0.0",
-  "publisher": "pyret-local",
+  "publisher": "LucasAlegre",
   "license": "MIT",
   "icon": "icon.png",
   "galleryBanner": {
@@ -12,11 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/brownplt/code.pyret.org"
+    "url": "https://github.com/LucasAlegre/pyret-light-theme.git"
   },
-  "homepage": "https://github.com/brownplt/code.pyret.org",
+  "homepage": "https://github.com/LucasAlegre/pyret-light-theme",
   "bugs": {
-    "url": "https://github.com/brownplt/code.pyret.org/issues"
+    "url": "https://github.com/LucasAlegre/pyret-light-theme/issues"
   },
   "keywords": ["pyret", "syntax", "theme", "highlighting", "arr"],
   "engines": {
