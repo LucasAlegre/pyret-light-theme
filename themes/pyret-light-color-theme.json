@@ -161,6 +161,11 @@
       "settings": { "foreground": "#5b21b6" }
     },
     {
+      "name": "Pyret Parameters",
+      "scope": ["variable.parameter.pyret", "variable.parameter"],
+      "settings": { "foreground": "#047857" }
+    },
+    {
       "name": "Pyret Variables",
       "scope": ["variable.other.readwrite.pyret", "variable.other.pyret"],
       "settings": { "foreground": "#111827" }
@@ -181,6 +186,6 @@
     "type":                 "#5b21b6",
     "variable":             "#111827",
     "operator":             "#111827",
-    "parameter":            "#111827"
+    "parameter":            "#047857"
   }
 }
