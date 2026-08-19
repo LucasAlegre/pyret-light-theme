@@ -176,45 +176,90 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
     }
     if ((match = stream.match(pyret_double_punctuation, true)) ||
         (match = stream.match(pyret_single_punctuation, true))) {
-      if (state.dataNoPipeColon && (match[0] == ":" || match[0] == "|"))
+      const p = match[0];
+      if (state.dataNoPipeColon && (p == ":" || p == "|"))
         state.dataNoPipeColon = false;
-      if (match[0] === "::" || match[0] === "->") {
+      if (p === "=>") {
+        state.inParamList = false;
+      }
+      if (p === "::" || p === "->") {
         state.inTypeAnnotation = true;
         state.typeParenDepth = 0;
       } else if (state.inTypeAnnotation) {
-        if (match[0] === "(" || match[0] === "<" || match[0] === "[" || match[0] === "{") {
+        if (p === "(" || p === "<" || p === "[" || p === "{") {
           state.typeParenDepth = (state.typeParenDepth || 0) + 1;
-        } else if (match[0] === ")" || match[0] === ">" || match[0] === "]" || match[0] === "}") {
+        } else if (p === ")" || p === ">" || p === "]" || p === "}") {
           if ((state.typeParenDepth || 0) > 0) {
             state.typeParenDepth--;
           } else {
             state.inTypeAnnotation = false;
           }
-        } else if (match[0] === ",") {
+        } else if (p === ",") {
           if ((state.typeParenDepth || 0) === 0) {
             state.inTypeAnnotation = false;
           }
-        } else if (match[0] === ":" || match[0] === "=") {
+        } else if (p === ":" || p === "=") {
           if ((state.typeParenDepth || 0) === 0) {
             state.inTypeAnnotation = false;
           }
         }
       }
-      return ret(state, match[0], match[0], 'builtin');
+
+      if (p === "(") {
+        if (state.expectingFunParams) {
+          state.expectingFunParams = false;
+          state.inParamList = true;
+          state.paramParenDepth = 1;
+          if (!state.paramScopes) state.paramScopes = [];
+          state.paramScopes.push({ isBranch: false, set: new Set() });
+        } else if (state.inParamList) {
+          state.paramParenDepth = (state.paramParenDepth || 0) + 1;
+        }
+      } else if (p === ")") {
+        if (state.inParamList) {
+          if ((state.paramParenDepth || 0) > 1) {
+            state.paramParenDepth--;
+          } else {
+            state.paramParenDepth = 0;
+            state.inParamList = false;
+          }
+        }
+      } else if (p === "|") {
+        if (!state.paramScopes) state.paramScopes = [];
+        if (state.paramScopes.length > 0 && state.paramScopes[state.paramScopes.length - 1].isBranch) {
+          state.paramScopes.pop();
+        }
+        state.inParamList = true;
+        state.paramParenDepth = 0;
+        state.paramScopes.push({ isBranch: true, set: new Set() });
+      }
+      return ret(state, p, p, 'builtin');
     }
     if ((match = stream.match(pyret_keywords_hyphen, true))) {
       return ret(state, match[0], match[0], 'keyword');
     }
     if ((match = stream.match(pyret_keywords, true))) {
-      if (match[0] == "data")
+      const kw = match[0];
+      if (kw === "data")
         state.dataNoPipeColon = true;
-      if (match[0] === "type" || match[0] === "newtype" || match[0] === "data") {
+      if (kw === "fun" || kw === "lam" || kw === "method") {
+        state.expectingFunParams = true;
+      } else if (kw === "end") {
+        state.inParamList = false;
+        state.expectingFunParams = false;
+        if (state.paramScopes && state.paramScopes.length > 0) {
+          state.paramScopes.pop();
+        }
+      } else if (kw === "cases") {
+        state.expectingFunParams = false;
+      }
+      if (kw === "type" || kw === "newtype" || kw === "data") {
         state.inTypeAnnotation = true;
         state.typeParenDepth = 0;
       } else if (state.inTypeAnnotation && (state.typeParenDepth || 0) === 0) {
         state.inTypeAnnotation = false;
       }
-      return ret(state, match[0], match[0], 'keyword');
+      return ret(state, kw, kw, 'keyword');
     }
     if ((match = stream.match(pyret_booleans, true))) {
       return ret(state, match[0], match[0], 'boolean');
@@ -227,7 +272,8 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
     }
     // Level 2
     if ((match = stream.match(pyret_ident_regex))) {
-      const isPascalCase = /^[A-Z][a-zA-Z0-9_-]*$/.test(match[0]) && !(/^[A-Z0-9_-]+$/.test(match[0]) && match[0].length > 1 && !/^[A-Z][a-z]/.test(match[0]));
+      const name = match[0];
+      const isPascalCase = /^[A-Z][a-zA-Z0-9_-]*$/.test(name) && !(/^[A-Z0-9_-]+$/.test(name) && name.length > 1 && !/^[A-Z][a-z]/.test(name));
       const isType = state.inTypeAnnotation ||
                      state.lastToken === "|" ||
                      state.lastToken === "::" ||
@@ -239,11 +285,37 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
 
       if (isType) {
         state.dataNoPipeColon = false;
-        return ret(state, 'name', match[0], 'type');
+        return ret(state, 'name', name, 'type');
       }
-      else if (stream.match(/\s*\(/, false))
-        return ret(state, 'name', match[0], 'function-name');
-      return ret(state, 'name', match[0], 'variable');
+
+      if (state.expectingFunParams && !stream.match(/\s*\(/, false)) {
+        return ret(state, 'name', name, 'function-name');
+      }
+
+      if (state.inParamList && !isType) {
+        if (state.paramScopes && state.paramScopes.length > 0) {
+          state.paramScopes[state.paramScopes.length - 1].set.add(name);
+        }
+        return ret(state, 'name', name, 'parameter');
+      }
+
+      let isParam = false;
+      if (state.paramScopes && state.paramScopes.length > 0) {
+        for (let i = state.paramScopes.length - 1; i >= 0; i--) {
+          if (state.paramScopes[i].set.has(name)) {
+            isParam = true;
+            break;
+          }
+        }
+      }
+
+      if (isParam) {
+        return ret(state, 'name', name, 'parameter');
+      }
+
+      if (stream.match(/\s*\(/, false))
+        return ret(state, 'name', name, 'function-name');
+      return ret(state, 'name', name, 'variable');
     }
     if (stream.eat("-"))
       return ret(state, '-', '-', 'builtin');
@@ -981,7 +1053,13 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
              commentNestingDepth: oldState.commentNestingDepth, inString: oldState.inString,
              dataNoPipeColon: oldState.dataNoPipeColon,
              sol: oldState.sol,
-             maybeShorthandLambda: oldState.maybeShorthandLambda
+             maybeShorthandLambda: oldState.maybeShorthandLambda,
+             inTypeAnnotation: oldState.inTypeAnnotation,
+             typeParenDepth: oldState.typeParenDepth,
+             paramScopes: oldState.paramScopes ? oldState.paramScopes.map(sc => ({ isBranch: sc.isBranch, set: new Set(sc.set) })) : [],
+             inParamList: oldState.inParamList,
+             expectingFunParams: oldState.expectingFunParams,
+             paramParenDepth: oldState.paramParenDepth
            };
   }
 
@@ -1043,7 +1121,11 @@ CodeMirror.defineMode("pyret", function(config, parserConfig) {
                                  new Indent(), new Indent(),
                                  new Indent(), new Indent(),
                                  pyret_delimiter_type.NONE ),
-        sol: true
+        sol: true,
+        paramScopes: [],
+        inParamList: false,
+        expectingFunParams: false,
+        paramParenDepth: 0
       };
     },
     blankLine: function blankLine(state) {
