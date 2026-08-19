@@ -30,6 +30,7 @@ const CM_TO_INDEX = {
   'type':                5,  // type
   'variable':            6,  // variable
   'builtin':             7,  // operator
+  'parameter':           8,  // parameter
 };
 
 class PyretSemanticTokensProvider {
