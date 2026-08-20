@@ -79,7 +79,7 @@
     "terminal.foreground":                   "#111827",
     "terminal.ansiBlack":                    "#374151",
     "terminal.ansiRed":                      "#b91c1c",
-    "terminal.ansiGreen":                    "#16a34a",
+    "terminal.ansiGreen":                    "#14532d",
     "terminal.ansiYellow":                   "#d97706",
     "terminal.ansiBlue":                     "#0066cc",
     "terminal.ansiMagenta":                  "#5b21b6",
@@ -87,7 +87,7 @@
     "terminal.ansiWhite":                    "#f3f4f6",
     "terminal.ansiBrightBlack":              "#6b7280",
     "terminal.ansiBrightRed":                "#dc2626",
-    "terminal.ansiBrightGreen":              "#22c55e",
+    "terminal.ansiBrightGreen":              "#16a34a",
     "terminal.ansiBrightYellow":             "#f59e0b",
     "terminal.ansiBrightBlue":              "#2563eb",
     "terminal.ansiBrightMagenta":            "#7c3aed",
@@ -128,7 +128,7 @@
     {
       "name": "Pyret Strings",
       "scope": ["string.quoted.double.pyret", "string.quoted.single.pyret", "string.quoted.triple.pyret", "string"],
-      "settings": { "foreground": "#16a34a" }
+      "settings": { "foreground": "#14532d" }
     },
     {
       "name": "Pyret Booleans",
@@ -163,7 +163,7 @@
     {
       "name": "Pyret Parameters",
       "scope": ["variable.parameter.pyret", "variable.parameter"],
-      "settings": { "foreground": "#047857" }
+      "settings": { "foreground": "#16a34a" }
     },
     {
       "name": "Pyret Variables",
@@ -179,13 +179,13 @@
   "semanticTokenColors": {
     "keyword":              "#b91c1c",
     "comment":              "#d97706",
-    "string":               "#16a34a",
+    "string":               "#14532d",
     "number":               "#1d4ed8",
     "function":             "#0066cc",
     "function.declaration": "#0066cc",
     "type":                 "#5b21b6",
     "variable":             "#111827",
     "operator":             "#111827",
-    "parameter":            "#047857"
+    "parameter":            "#16a34a"
   }
 }
